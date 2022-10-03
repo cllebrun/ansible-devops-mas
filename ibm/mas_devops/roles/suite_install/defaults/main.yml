@@ -1,0 +1,50 @@
+---
+# Catalog & Source
+# -----------------------------------------------------------------------------
+mas_catalog_source: "{{ lookup('env', 'MAS_CATALOG_SOURCE') | default('ibm-operator-catalog', true) }}"
+mas_channel: "{{ lookup('env', 'MAS_CHANNEL') }}"
+
+# General Configuration
+# -----------------------------------------------------------------------------
+mas_domain: "{{ lookup('env', 'MAS_DOMAIN') }}"
+mas_instance_id: "{{ lookup('env', 'MAS_INSTANCE_ID') }}"
+
+# Certificate Management
+# -----------------------------------------------------------------------------
+mas_cluster_issuer: "{{ lookup('env', 'MAS_CLUSTER_ISSUER') }}"
+mas_certificate_duration: "{{ lookup('env', 'MAS_CERTIFICATE_DURATION') | default('8760h0m0s', true) }}"
+mas_certificate_renew_before: "{{ lookup('env', 'MAS_CERTIFICATE_RENEW_BEFORE') | default('720h0m0s', true) }}"
+
+# Source container registry
+# -----------------------------------------------------------------------------
+mas_icr_cp: "{{ lookup('env', 'MAS_ICR_CP') | default('cp.icr.io/cp', true) }}"
+mas_icr_cpopen: "{{ lookup('env', 'MAS_ICR_CPOPEN') | default('icr.io/cpopen', true) }}"
+
+# MAS Entitlement
+# -----------------------------------------------------------------------------
+mas_entitlement_username: "{{ lookup('env', 'MAS_ENTITLEMENT_USERNAME') | default('cp', true) }}"
+ibm_entitlement_key: "{{ lookup('env', 'IBM_ENTITLEMENT_KEY') }}"
+mas_entitlement_key: "{{ lookup('env', 'MAS_ENTITLEMENT_KEY') | default(ibm_entitlement_key, true) }}"
+
+# Data Dictionary
+# -----------------------------------------------------------------------------
+mas_add_catalog: "{{ lookup('env', 'MAS_ADD_CATALOG') }}"
+mas_add_channel: "{{ lookup('env', 'MAS_ADD_CHANNEL') }}"
+
+# Manual upgrade support
+# -----------------------------------------------------------------------------
+# Following variables are used when MAS Operator upgrade is set to Manual.
+# it contains the ibm-common-services namespace and the list of labels from
+# the Subcriptions created by MAS installation.
+mas_upgrade_strategy: "{{ lookup('env', 'MAS_UPGRADE_STRATEGY') | default('Automatic', true) }}"
+
+ibm_common_services_namespace: ibm-common-services
+ibm_common_services_subscription_labels:
+  - ibm-common-service-operator.ibm-common-services
+  - ibm-namespace-scope-operator.ibm-common-services
+  - ibm-odlm.ibm-common-services
+  - ibm-licensing-operator-app.ibm-common-services
+
+# MAS Annotation block
+# -----------------------------------------------------------------------------
+mas_annotations: "{{ lookup('env', 'MAS_ANNOTATIONS') | default(None, true) }}"

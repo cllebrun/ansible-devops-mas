@@ -1,0 +1,25 @@
+---
+# 1. Wait for CCS CR to be ready
+# -----------------------------------------------------------------------------
+# Note: We can't fail early when we see Failed status, as the operator will
+# report failed multiple times during initial reconcile.
+- name: "wait-ccs : Wait for ccsStatus 'Completed' (5m interval)"
+  kubernetes.core.k8s_info:
+    api_version: "ccs.cpd.ibm.com/v1beta1"
+    kind: CCS
+    name: "ccs-cr"
+    namespace: "{{ cpd_instance_namespace }}"
+  register: ccs_cr_lookup
+  until:
+    - ccs_cr_lookup.resources is defined
+    - ccs_cr_lookup.resources | length == 1
+    - ccs_cr_lookup.resources[0].status is defined
+    - ccs_cr_lookup.resources[0].status.ccsStatus is defined
+    - ccs_cr_lookup.resources[0].status.ccsStatus == "Completed" #  or ccs_cr_lookup.resources[0].status.wmlStatus == "Failed"
+  retries: 50 # Just over 4 hours
+  delay: 300 # Every 5 minutes
+
+- name: "wait-ccs : Check that the CCS ccsStatus is 'Completed'"
+  assert:
+    that: ccs_cr_lookup.resources[0].status.ccsStatus == "Completed"
+    fail_msg: "CCS install failed (ccsStatus)"

@@ -1,0 +1,46 @@
+---
+apiVersion: discovery.watson.ibm.com/v1
+kind: WatsonDiscovery
+metadata:
+  annotations:
+    oppy.ibm.com/disable-rollback: 'true'
+  name: "{{ cpd_service_info[cpd_service_name].cr_name }}"
+  namespace: "{{ cpd_instance_namespace }}"
+spec:
+  license:
+    accept: true
+  shared:
+    imagePullSecret: ibm-entitlement-key
+    storageClassName: "{{ cpd_service_storage_class }}"
+  watsonGateway:
+    version: main
+  elasticsearch:
+    clientNode:
+      persistence:
+        size: 1Gi
+    dataNode:
+      persistence:
+        size: 40Gi
+    masterNode:
+      persistence:
+        size: 2Gi
+  etcd:
+    # Not technically required, it *should* inherit the value from shared.imagePullSecret, but doesn't work
+    # https://github.ibm.com/PrivateCloud-analytics/CPD-Quality/issues/3481
+    imagePullSecret: ibm-entitlement-key
+    storageSize: 10Gi
+  minio:
+    # Not technically required, it *should* inherit the value from shared.imagePullSecret, but doesn't work
+    # https://github.ibm.com/PrivateCloud-analytics/CPD-Quality/issues/3481
+    imagePullSecret: ibm-entitlement-key
+    persistence:
+      size: 100Gi
+  postgres:
+    database:
+      storageRequest: 30Gi
+  rabbitmq:
+    # Not technically required, it *should* inherit the value from shared.imagePullSecret but doesn't work
+    # https://github.ibm.com/PrivateCloud-analytics/CPD-Quality/issues/3481
+    imagePullSecret: ibm-entitlement-key
+    persistentVolume:
+      size: 5Gi

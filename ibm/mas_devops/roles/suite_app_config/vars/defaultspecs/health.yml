@@ -1,0 +1,17 @@
+---
+# Default application spec for Health
+mas_app_ws_spec:
+  bindings:
+    jdbc: "{{ mas_appws_jdbc_binding | default( 'system' , true) }}"
+  components: "{{ mas_appws_components | default({'health':{'version':'latest'}}, true) }}"
+  settings:
+    aio:
+      install: "{{ aio_flag | bool }}"
+    db:
+      dbSchema: "{{ db2_schema }}"
+      maxinst:
+        demodata: "{{ manage_demo_data | bool }}"
+        db2Vargraphic: true
+        indexSpace: MAXINDEX
+        tableSpace: MAXDATA
+        bypassUpgradeVersionCheck: false

@@ -1,0 +1,7 @@
+
+*.DS_Store*
+.env
+.vscode
+site
+ibm/mas_devops/dev-*.yml
+ibm-mas_devops-*.tar.gz

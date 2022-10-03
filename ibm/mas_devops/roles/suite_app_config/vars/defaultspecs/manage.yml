@@ -1,0 +1,17 @@
+---
+# Default application spec for Manage
+mas_app_ws_spec:
+  bindings:
+    jdbc: "{{ mas_appws_jdbc_binding | default( 'system' , true) }}"
+  components: "{{ mas_appws_components | default({'base':{'version':'latest'}}, true) }}"
+  settings:
+    aio:
+      install: "{{ mas_app_settings_aio_flag | bool  }}"
+    db:
+      dbSchema: "{{ mas_app_settings_db2_schema }}"
+      maxinst:
+        demodata: "{{ mas_app_settings_demodata | bool }}"
+        db2Vargraphic: true
+        indexSpace: MAXINDEX
+        tableSpace: MAXDATA
+        bypassUpgradeVersionCheck: false
